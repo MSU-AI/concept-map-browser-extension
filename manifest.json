@@ -1,0 +1,27 @@
+{
+    
+    "manifest_version": 3,
+    "name": "Concept-map",
+    "version": "1.0",
+  
+    
+    "action": {
+      "default_icon": {              
+      "16": "images/icon16.png",   
+      "24": "images/icon24.png",   
+      "32": "images/icon32.png"    
+      }
+    },
+
+    
+    "description": "An extension to develop a concept-map for the core topics on the active tab",
+    "icons": {
+        "16": "images/icon16.png",
+        "32": "images/icon32.png",
+        "48": "images/icon48.png",
+        "128": "images/icon24.png"
+    }
+  
+    
+    
+}
