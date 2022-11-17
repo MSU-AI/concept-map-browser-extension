@@ -1,0 +1,168 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 700px;
+                 height: 700px;
+                 background-color: #eeeeee;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="text">
+            {% if value != None %}
+                <p>{{ value }}</p>
+            {% endif %}
+        </div>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#00FF00", "id": "India", "label": "India", "shape": "circle"}, {"color": "#00FF00", "id": "Gujarat", "label": "Gujarat", "shape": "circle"}, {"color": "#00FF00", "id": "Inner Temple", "label": "Inner Temple", "shape": "circle"}, {"color": "#00FF00", "id": "London", "label": "London", "shape": "circle"}, {"color": "#00FF00", "id": "Mahatma Gandhi", "label": "Mahatma Gandhi", "shape": "circle"}, {"color": "#00FF00", "id": "Nonviolent resistance", "label": "Nonviolent resistance", "shape": "circle"}, {"color": "#00FF00", "id": "South Africa", "label": "South Africa", "shape": "circle"}, {"color": "#00FF00", "id": "Indian National Congress", "label": "Indian National Congress", "shape": "circle"}, {"color": "#00FF00", "id": "Peasant", "label": "Peasant", "shape": "circle"}, {"color": "#00FF00", "id": "Farmer", "label": "Farmer", "shape": "circle"}, {"color": "#00FF00", "id": "Fasting", "label": "Fasting", "shape": "circle"}, {"color": "#00FF00", "id": "Salt March", "label": "Salt March", "shape": "circle"}, {"color": "#00FF00", "id": "1930", "label": "1930", "shape": "circle"}, {"color": "#00FF00", "id": "Nationalism", "label": "Nationalism", "shape": "circle"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "India", "label": "contains administrative territorial entity", "title": "contains administrative territorial entity", "to": "Gujarat"}, {"arrows": "to", "from": "Gujarat", "label": "country", "title": "country", "to": "India"}, {"arrows": "to", "from": "Inner Temple", "label": "headquarters location", "title": "headquarters location", "to": "London"}, {"arrows": "to", "from": "Mahatma Gandhi", "label": "movement", "title": "movement", "to": "Nonviolent resistance"}, {"arrows": "to", "from": "Mahatma Gandhi", "label": "field of work", "title": "field of work", "to": "Nonviolent resistance"}, {"arrows": "to", "from": "Mahatma Gandhi", "label": "residence", "title": "residence", "to": "South Africa"}, {"arrows": "to", "from": "Mahatma Gandhi", "label": "member of political party", "title": "member of political party", "to": "Indian National Congress"}, {"arrows": "to", "from": "Peasant", "label": "subclass of", "title": "subclass of", "to": "Farmer"}, {"arrows": "to", "from": "Mahatma Gandhi", "label": "religion", "title": "religion", "to": "Fasting"}, {"arrows": "to", "from": "Mahatma Gandhi", "label": "significant event", "title": "significant event", "to": "Fasting"}, {"arrows": "to", "from": "Salt March", "label": "point in time", "title": "point in time", "to": "1930"}, {"arrows": "to", "from": "Salt March", "label": "movement", "title": "movement", "to": "Nationalism"}, {"arrows": "to", "from": "Salt March", "label": "political ideology", "title": "political ideology", "to": "Nationalism"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "repulsion": {
+            "centralGravity": 0.2,
+            "damping": 0.09,
+            "nodeDistance": 200,
+            "springConstant": 0.05,
+            "springLength": 200
+        },
+        "solver": "repulsion",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
